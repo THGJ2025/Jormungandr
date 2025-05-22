@@ -1,0 +1,29 @@
+# Unreal Engine: Ignore build files, binaries, cache, etc.
+
+# Binaries
+Binaries/
+
+# Intermediate build files
+Intermediate/
+Saved/
+DerivedDataCache/
+
+# VS / Rider files
+.vs/
+.idea/
+*.sln
+*.VC.db
+*.suo
+*.opensdf
+*.sdf
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Ignore local plugin binaries (if any)
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
+# zip
+*.zip
