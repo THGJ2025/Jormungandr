@@ -9,13 +9,18 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine"
+				"Engine",
+				"Water"
 			]
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "FieldSystemPlugin",
+			"Enabled": true
+		},
+		{
+			"Name": "Water",
 			"Enabled": true
 		}
 	]
