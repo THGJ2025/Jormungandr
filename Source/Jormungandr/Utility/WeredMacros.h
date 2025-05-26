@@ -2,8 +2,6 @@
 
 #pragma once
 
-// TODO replace all Nullcheck regions with this macro
-// TODO try make it with template
 #if !UE_BUILD_SHIPPING
 /**
  * Checks the validity of a UObject pointer, logs a warning if it is invalid to help prevent editor crashes, and then returns.

@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "JPlayer.generated.h"
 
+class UInputAction;
+class UJItemManagerComponent;
+
 UCLASS()
 class JORMUNGANDR_API AJPlayer : public ACharacter
 {
@@ -14,11 +17,35 @@ class JORMUNGANDR_API AJPlayer : public ACharacter
 public:
 	AJPlayer();
 
-protected:
-	virtual void BeginPlay() override;
+#pragma region Items
 
 public:
-	virtual void Tick(float DeltaTime) override;
-	//
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UFUNCTION(BlueprintGetter)
+	FORCEINLINE UJItemManagerComponent* GetItemManager()
+	{
+		return ItemManagerComponent;
+	}
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetItemManager, meta=(DisplayName="Item Manager"))
+	TObjectPtr<UJItemManagerComponent> ItemManagerComponent;
+
+#pragma endregion
+
+#pragma region Input
+
+public:
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+protected:
+	void PrimaryUseActiveItem();
+	void SecondaryUseActiveItem();
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category="J|Input")
+	TObjectPtr<UInputAction> PrimaryUseActiveItemAction;
+	UPROPERTY(EditDefaultsOnly, Category="J|Input")
+	TObjectPtr<UInputAction> SecondaryUseActiveItemAction;
+
+#pragma endregion
 };
