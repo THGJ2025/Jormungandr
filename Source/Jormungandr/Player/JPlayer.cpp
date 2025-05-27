@@ -2,26 +2,12 @@
 
 
 #include "JPlayer.h"
+#include "Jormungandr/InteractionSystem/JInteractComponent.h"
 
 
 AJPlayer::AJPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	InteractComponent = CreateDefaultSubobject<UJInteractComponent>(TEXT("Interact Component"));
 }
-
-void AJPlayer::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
-void AJPlayer::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void AJPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-

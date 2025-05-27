@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "JPlayer.generated.h"
 
+class UJInteractComponent;
+class UInputAction;
+
 UCLASS()
 class JORMUNGANDR_API AJPlayer : public ACharacter
 {
@@ -14,11 +17,17 @@ class JORMUNGANDR_API AJPlayer : public ACharacter
 public:
 	AJPlayer();
 
-protected:
-	virtual void BeginPlay() override;
+#pragma region Interact
 
 public:
-	virtual void Tick(float DeltaTime) override;
-	//
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	FORCEINLINE UJInteractComponent* GetInteractComponent()
+	{
+		return InteractComponent;
+	}
+
+private:
+	UPROPERTY(VisibleAnywhere, meta=(DisplayName="Interact Component"))
+	TObjectPtr<UJInteractComponent> InteractComponent;
+
+#pragma endregion
 };
