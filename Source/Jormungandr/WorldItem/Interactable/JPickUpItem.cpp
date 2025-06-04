@@ -20,7 +20,11 @@ void AJPickUpItem::InteractPressTriggered_Implementation()
 
 	UVALID_LOG_DEBUG(ItemToPickUp)
 
-	Cast<AJPlayer>(GetInteractableComponent()->GetInteractInstigator())->GetInventoryComponent()->AddItem(ItemToPickUp);
+	AJPlayer* Player{Cast<AJPlayer>(GetInteractableComponent()->GetInteractInstigator())};
+
+	UVALID_LOG_DEBUG(Player)
+
+	Player->GetInventoryComponent()->AddItem(ItemToPickUp);
 
 	Destroy();
 }

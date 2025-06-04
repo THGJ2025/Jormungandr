@@ -35,6 +35,8 @@ void UJInventoryComponent::AddItem(AJInventoryItem* NewItem)
 		UE_LOG(LogTemp, Warning, TEXT("AddItem: first item - setting new active item"))
 		SetActiveItem(NewItem);
 	}
+
+	NewItem->SetInstigator(Cast<APawn>(GetOwner()));
 }
 
 void UJInventoryComponent::ChangeActiveItem(const FInputActionValue& Value)
