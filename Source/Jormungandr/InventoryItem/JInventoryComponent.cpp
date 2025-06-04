@@ -50,20 +50,11 @@ void UJInventoryComponent::ChangeActiveItem(const FInputActionValue& Value)
 		return;
 	}
 
-	// If false change to previous item, if true change to next item
-	const float ChangeValue{Value.Get<float>()};
-	if (ChangeValue > 0.f)
-	{
-		ActiveItemIndex = (ActiveItemIndex + 1) % Items.Num();
-	}
-	else
-	{
-		ActiveItemIndex = (ActiveItemIndex + Items.Num() - 1) % Items.Num();
-	}
-	// try
-	// ActiveItemIndex = (ActiveItemIndex + ChangeValue + Items.Num()) % Items.Num();
+	const uint8 ChangeValue = Value.Get<float>();
+	// Wraps index from 0 to size of array, works in both ways for -1 and 1
+	ActiveItemIndex = (ActiveItemIndex + ChangeValue + Items.Num()) % Items.Num();
 
-	UE_LOG(LogTemp, Warning, TEXT("ChangeValue: %f"), ChangeValue)
+	UE_LOG(LogTemp, Warning, TEXT("ChangeValue: %d"), ChangeValue)
 	SetActiveItem(Items[ActiveItemIndex]);
 }
 
