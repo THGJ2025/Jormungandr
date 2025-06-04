@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "JPlayer.generated.h"
 
+class UJInventoryComponent;
 class UJInteractComponent;
 class UInputAction;
 
@@ -19,15 +20,23 @@ public:
 
 #pragma region Interact
 
-public:
-	FORCEINLINE UJInteractComponent* GetInteractComponent()
-	{
-		return InteractComponent;
-	}
-
 private:
 	UPROPERTY(VisibleAnywhere, meta=(DisplayName="Interact Component"))
 	TObjectPtr<UJInteractComponent> InteractComponent;
+
+#pragma endregion
+
+#pragma region Inventory
+
+public:
+	UJInventoryComponent* GetInventoryComponent()
+	{
+		return InventoryComponent;
+	}
+
+private:
+	UPROPERTY(VisibleAnywhere, meta=(DisplayName="Inventory Component"))
+	TObjectPtr<UJInventoryComponent> InventoryComponent;
 
 #pragma endregion
 };

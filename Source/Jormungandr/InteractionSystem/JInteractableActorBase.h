@@ -34,7 +34,13 @@ public:
 	virtual bool GetCanInteract_Implementation() override;
 	virtual EInteractType GetInteractType_Implementation() override;
 
-protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UFUNCTION(BlueprintCallable, BlueprintGetter)
+	UJInteractableComponent* GetInteractableComponent()
+	{
+		return InteractableComponent;
+	}
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetInteractableComponent)
 	TObjectPtr<UJInteractableComponent> InteractableComponent;
 };
