@@ -10,7 +10,6 @@ class URotatingMovementComponent;
 class UProjectileMovementComponent;
 
 DECLARE_DELEGATE(FOnFlightCompletedSignature)
-DECLARE_DELEGATE(FOnBellRecallCompletedSignature)
 
 UCLASS()
 class JORMUNGANDR_API AJRitualBell : public AJInventoryItem
@@ -24,7 +23,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void PrimaryUse() override;
@@ -42,8 +40,6 @@ public:
 	 * Delegate used to notify the subscriber when it has arrived at its target.
 	 */
 	FOnFlightCompletedSignature OnFlightCompletedDelegate;
-
-	FOnBellRecallCompletedSignature OnBellRecallCompletedDelegate;
 
 private:
 	void Launch(const FVector& Velocity);
@@ -73,13 +69,6 @@ private:
 	 * Changes its state and notifies all subscribers of the OnFlightCompleted delegate.
 	 */
 	void OnFlightTimerCompleted();
-
-	/**
-	 * Called when the Bell has completed its flight to its target.
-	 * In this case, it's when the Bell recall is complete.
-	 * Before the function is complete, it notifies it's subscriber (the player) that the recall is complete.
-	 */
-	void OnBellFlightCompleted();
 
 	enum class EBellState : uint8
 	{

@@ -2,7 +2,6 @@
 
 
 #include "JRitualBell.h"
-
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/RotatingMovementComponent.h"
@@ -33,8 +32,6 @@ AJRitualBell::AJRitualBell()
 void AJRitualBell::BeginPlay()
 {
 	Super::BeginPlay();
-
-	OnFlightCompletedDelegate.BindUObject(this, &AJRitualBell::OnBellFlightCompleted);
 }
 
 void AJRitualBell::Tick(float DeltaTime)
@@ -126,12 +123,13 @@ void AJRitualBell::FlyToTarget(const FQuat& TargetRotation, const FVector& Targe
 
 	const double DistanceToTarget{FVector::Dist(FlightInfo.TargetLocation, InitialLocation)};
 
+	const FQuat FlightRotation{FlightInfo.TargetRotation * FQuat(FVector::RightVector, FMath::DegreesToRadians(90.f))};
+	SetActorRotation(FlightRotation);
+
 	/**
 	 * If the time calculated based on MinSpeed is less than FlightMaxDuration, it will be the chosen duration of the flight.
 	 */
 	FlightInfo.Duration = FMath::Min(DistanceToTarget / MinSpeed, FlightMaxDuration);
-
-	SetActorRotation(FlightInfo.TargetRotation);
 
 	GetWorldTimerManager().SetTimer(FlightInfo.FlightTimer, this, &AJRitualBell::OnFlightTimerCompleted, FlightInfo.Duration, false);
 }
@@ -173,14 +171,8 @@ void AJRitualBell::OnFlightTimerCompleted()
 	SetActorRotation(FlightInfo.TargetRotation);
 	SetActorLocation(FlightInfo.TargetLocation);
 
-	OnFlightCompletedDelegate.ExecuteIfBound();
-
-	BellState = EBellState::EBS_Idle;
-}
-
-void AJRitualBell::OnBellFlightCompleted()
-{
 	AttachToComponent(Cast<ACharacter>(GetInstigator())->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("hand_r_Socket"));
+	BellState = EBellState::EBS_Idle;
 
-	OnBellRecallCompletedDelegate.ExecuteIfBound();
+	OnFlightCompletedDelegate.ExecuteIfBound();
 }
