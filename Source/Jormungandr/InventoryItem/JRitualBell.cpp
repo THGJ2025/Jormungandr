@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/RotatingMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 AJRitualBell::AJRitualBell()
@@ -108,6 +109,8 @@ void AJRitualBell::OnMeshHit(UPrimitiveComponent* HitComponent,
 	UE_LOG(LogTemp, Warning, TEXT("Bell hit: %s"), *OtherActor->GetName())
 	ProjectileMovementComponent->Deactivate();
 	RotatingMovementComponent->Deactivate();
+
+	OnBellHit();
 }
 
 void AJRitualBell::Launch(const FVector& Velocity)
@@ -150,6 +153,13 @@ void AJRitualBell::FlyToTarget(const FQuat& TargetRotation, const FVector& Targe
 	GetWorldTimerManager().SetTimer(FlightInfo.FlightTimer, this, &AJRitualBell::OnFlightTimerCompleted, FlightInfo.Duration, false);
 }
 
+void AJRitualBell::OnBellHit()
+{
+	BellState = EBellState::EBS_IdleAfterImpact;
+
+	GetWorldTimerManager().SetTimer(IdleAfterImpactTimer, this, &AJRitualBell::RecallBell, IdleAfterImpactDuration, false);
+}
+
 void AJRitualBell::PostLaunchTick()
 {
 	if (FVector::Dist(InitialLocation, GetActorLocation()) >= MaxDistance)
@@ -168,6 +178,12 @@ void AJRitualBell::FlyToTargetTick()
 
 void AJRitualBell::InterpToTargetLocation()
 {
+	FlightInfo.TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GetInstigator()->GetActorLocation()).Quaternion();
+	const FQuat FlightRotation{FlightInfo.TargetRotation * FQuat(FVector::RightVector, FMath::DegreesToRadians(-90.f))};
+	SetActorRotation(FlightRotation);
+	const FVector PlayerRightHandLocation{Cast<ACharacter>(GetInstigator())->GetMesh()->GetSocketLocation(FName("hand_r_Socket"))};
+	FlightInfo.TargetLocation = PlayerRightHandLocation;
+
 	const float TimeElapsed{GetWorldTimerManager().GetTimerElapsed(FlightInfo.FlightTimer)};
 
 	/**

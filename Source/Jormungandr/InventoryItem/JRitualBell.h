@@ -56,11 +56,16 @@ private:
 	UFUNCTION()
 	void FlyToTarget(const FQuat& TargetRotation, const FVector& TargetLocation, float MinSpeed, float FlightMaxDuration);
 
+	void OnBellHit();
+
 	/**
 	 * Function called in Tick if the Bell is in the PostLaunch state.
 	 */
 	void PostLaunchTick();
 
+	/**
+	 * Function called in Tick if the Bell is in the FlyToTarget state.
+	 */
 	void FlyToTargetTick();
 
 	/**
@@ -109,7 +114,6 @@ private:
 		 */
 		FTimerHandle FlightTimer{};
 		float Duration{};
-		float InterpToTargetRotationDuration{};
 	};
 
 	FFlightInfo FlightInfo{};
@@ -132,6 +136,11 @@ private:
 	float BellRecallMaxDuration{1.f};
 
 	FVector InitialLocation{};
+
+	FTimerHandle IdleAfterImpactTimer;
+
+	UPROPERTY(EditAnywhere, Category="J|Properties")
+	float IdleAfterImpactDuration{0.5f};
 
 	UPROPERTY(VisibleAnywhere, Category="J|Mesh")
 	TObjectPtr<UStaticMeshComponent> BellMesh;
