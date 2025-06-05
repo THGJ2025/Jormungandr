@@ -43,12 +43,17 @@ void UJInventoryComponent::ChangeActiveItem(const FInputActionValue& Value)
 {
 	if (Items.IsEmpty())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ChangeActiveItem - no items"))
+		UE_LOG(LogTemp, Warning, TEXT("ChangeActiveItem - can't change active item, because there are no items"))
 		return;
 	}
 	if (Items.Num() == 1)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ChangeActiveItem - one item"))
+		UE_LOG(LogTemp, Warning, TEXT("ChangeActiveItem - can't change active item, because there is only one item"))
+		return;
+	}
+	if (ActiveItem->GetIsInUse())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ChangeActiveItem - can't change active item, because active item is in use"))
 		return;
 	}
 
@@ -60,26 +65,36 @@ void UJInventoryComponent::ChangeActiveItem(const FInputActionValue& Value)
 	SetActiveItem(Items[ActiveItemIndex]);
 }
 
-void UJInventoryComponent::PrimaryUseActiveItem()
+void UJInventoryComponent::UseFirstAbilityActiveItem()
 {
 	if (!ActiveItem)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PrimaryUseActiveItem: no active item"))
+		UE_LOG(LogTemp, Warning, TEXT("UseFirstAbilityActiveItem - can't use first ability, because no active item"))
+		return;
+	}
+	if (ActiveItem->GetIsInUse())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UseFirstAbilityActiveItem - can't use first ability, because active item is in use."))
 		return;
 	}
 
-	ActiveItem->PrimaryUse();
+	ActiveItem->UseFirstAbility();
 }
 
-void UJInventoryComponent::SecondaryUseActiveItem()
+void UJInventoryComponent::UseSecondAbilityActiveItem()
 {
 	if (!ActiveItem)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SecondaryUseActiveItem: no active item"))
+		UE_LOG(LogTemp, Warning, TEXT("UseSecondAbilityActiveItem - can't use second ability, because no active item"))
+		return;
+	}
+	if (ActiveItem->GetIsInUse())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UseSecondAbilityActiveItem - can't use second ability, because active item is in use"))
 		return;
 	}
 
-	ActiveItem->SecondaryUse();
+	ActiveItem->UseSecondAbility();
 }
 
 void UJInventoryComponent::SetActiveItem(AJInventoryItem* NewActiveItem)
@@ -123,6 +138,6 @@ void UJInventoryComponent::SetupInput()
 	Subsystem->AddMappingContext(InventoryMappingContext, 0);
 
 	EnhancedInputComponent->BindAction(ChangeActiveItemAction, ETriggerEvent::Triggered, this, &UJInventoryComponent::ChangeActiveItem);
-	EnhancedInputComponent->BindAction(PrimaryUseAction, ETriggerEvent::Triggered, this, &UJInventoryComponent::PrimaryUseActiveItem);
-	EnhancedInputComponent->BindAction(SecondaryUseAction, ETriggerEvent::Triggered, this, &UJInventoryComponent::SecondaryUseActiveItem);
+	EnhancedInputComponent->BindAction(PrimaryUseAction, ETriggerEvent::Triggered, this, &UJInventoryComponent::UseFirstAbilityActiveItem);
+	EnhancedInputComponent->BindAction(SecondaryUseAction, ETriggerEvent::Triggered, this, &UJInventoryComponent::UseSecondAbilityActiveItem);
 }

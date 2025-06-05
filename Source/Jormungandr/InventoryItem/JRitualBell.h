@@ -25,7 +25,9 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void PrimaryUse() override;
+	virtual void UseFirstAbility() override;
+
+	virtual bool GetIsInUse() override;
 
 #pragma region ThrowAndRecall
 
@@ -36,6 +38,8 @@ public:
 	               UPrimitiveComponent* OtherComp,
 	               FVector NormalImpulse,
 	               const FHitResult& Hit);
+
+
 	/**
 	 * Delegate used to notify the subscriber when it has arrived at its target.
 	 */
@@ -44,7 +48,7 @@ public:
 private:
 	void Launch(const FVector& Velocity);
 
-	void RecallAxe();
+	void RecallBell();
 
 	/**
 	 * Initiates the Bell to fly to a target. Mostly recalling to the right hand, but can also have a different target
@@ -74,7 +78,7 @@ private:
 	{
 		EBS_None,
 		/**
-		 * State when the axe is idle. Used when a player is holding the Ritual Bell.
+		 * State when the Bell is idle. Used when a player is holding the Ritual Bell.
 		 */
 		EBS_Idle,
 		/**
@@ -91,6 +95,7 @@ private:
 		EBS_FlyingToTarget,
 		EBS_Max
 	};
+
 	/**
 	 * Used to encapsulate all the data responsible for flying the Bell to its target.
 	 */

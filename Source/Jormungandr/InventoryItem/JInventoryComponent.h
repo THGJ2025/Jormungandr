@@ -28,8 +28,8 @@ public:
 
 	void ChangeActiveItem(const FInputActionValue& Value);
 
-	void PrimaryUseActiveItem();
-	void SecondaryUseActiveItem();
+	void UseFirstAbilityActiveItem();
+	void UseSecondAbilityActiveItem();
 
 private:
 	void SetActiveItem(AJInventoryItem* NewActiveItem);

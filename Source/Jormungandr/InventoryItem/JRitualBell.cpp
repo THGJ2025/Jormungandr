@@ -57,9 +57,9 @@ void AJRitualBell::Tick(float DeltaTime)
 	}
 }
 
-void AJRitualBell::PrimaryUse()
+void AJRitualBell::UseFirstAbility()
 {
-	Super::PrimaryUse();
+	Super::UseFirstAbility();
 
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	SetActorRotation(GetInstigator()->GetControlRotation());
@@ -81,6 +81,22 @@ void AJRitualBell::PrimaryUse()
 	RotatingMovementComponent->RotationRate = BellThrowRotationRate;
 
 	Launch(ViewportCenterDirection * FlightSpeed);
+}
+
+bool AJRitualBell::GetIsInUse()
+{
+	switch (BellState)
+	{
+	case EBellState::EBS_None:
+	case EBellState::EBS_IdleAfterImpact:
+	case EBellState::EBS_PostLaunch:
+	case EBellState::EBS_FlyingToTarget:
+	case EBellState::EBS_Max:
+		return true;
+	case EBellState::EBS_Idle:
+		return false;
+	}
+	return false;
 }
 
 void AJRitualBell::OnMeshHit(UPrimitiveComponent* HitComponent,
@@ -105,7 +121,7 @@ void AJRitualBell::Launch(const FVector& Velocity)
 	BellState = EBellState::EBS_PostLaunch;
 }
 
-void AJRitualBell::RecallAxe()
+void AJRitualBell::RecallBell()
 {
 	const FVector PlayerRightHandLocation{Cast<ACharacter>(GetInstigator())->GetMesh()->GetSocketLocation(FName("hand_r_Socket"))};
 
@@ -141,7 +157,7 @@ void AJRitualBell::PostLaunchTick()
 		ProjectileMovementComponent->Deactivate();
 		RotatingMovementComponent->Deactivate();
 
-		RecallAxe();
+		RecallBell();
 	}
 }
 

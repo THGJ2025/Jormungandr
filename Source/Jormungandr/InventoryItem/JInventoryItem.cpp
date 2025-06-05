@@ -8,12 +8,3 @@ AJInventoryItem::AJInventoryItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
-
-void AJInventoryItem::PrimaryUse()
-{
-}
-
-void AJInventoryItem::SecondaryUse()
-{
-}
-
