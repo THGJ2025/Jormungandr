@@ -18,4 +18,13 @@ public:
 	virtual void UseSecondAbility() {}
 
 	virtual bool GetIsInUse() { return false; }
+
+	FORCEINLINE bool operator<(const AJInventoryItem& Item) const
+	{
+		return this->IndexOrder < Item.IndexOrder;
+	}
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category="J|Inventory Item")
+	uint8 IndexOrder{};
 };

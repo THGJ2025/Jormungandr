@@ -120,29 +120,29 @@ private:
 
 	EBellState BellState{EBellState::EBS_Idle};
 
-	UPROPERTY(EditAnywhere, Category="J|Properties")
+	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float FlightSpeed{500.f};
 
-	UPROPERTY(EditAnywhere, Category="J|Properties")
+	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float MaxDistance{200.f};
 
-	UPROPERTY(EditAnywhere, Category="J|Properties")
+	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	FRotator BellThrowRotationRate{-1440.f, 0.f, 0.f};
 
-	UPROPERTY(EditAnywhere, Category="J|Properties")
+	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float BellRecallMinSpeed{1600.f};
 
-	UPROPERTY(EditAnywhere, Category="J|Properties")
+	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float BellRecallMaxDuration{1.f};
 
 	FVector InitialLocation{};
 
 	FTimerHandle IdleAfterImpactTimer;
 
-	UPROPERTY(EditAnywhere, Category="J|Properties")
+	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float IdleAfterImpactDuration{0.5f};
 
-	UPROPERTY(VisibleAnywhere, Category="J|Mesh")
+	UPROPERTY(VisibleAnywhere, Category="J|Bell|Mesh")
 	TObjectPtr<UStaticMeshComponent> BellMesh;
 
 	UPROPERTY(VisibleAnywhere)
