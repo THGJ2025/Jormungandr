@@ -44,6 +44,9 @@ public:
 	               const FHitResult& Hit);
 
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnHitBreakableObject();
+
 	/**
 	 * Delegate used to notify the subscriber when it has arrived at its target.
 	 */
@@ -61,6 +64,7 @@ private:
 	void FlyToTarget(const FQuat& TargetRotation, const FVector& TargetLocation, float MinSpeed, float FlightMaxDuration);
 
 	void OnBellHit();
+
 
 	/**
 	 * Function called in Tick if the Bell is in the PostLaunch state.
@@ -119,6 +123,9 @@ private:
 		FTimerHandle FlightTimer{};
 		float Duration{};
 	};
+
+	UPROPERTY(EditDefaultsOnly, Category="J|Bell|Breakable object")
+	TSubclassOf<AActor> BreakableObjectClass;
 
 	FFlightInfo FlightInfo{};
 

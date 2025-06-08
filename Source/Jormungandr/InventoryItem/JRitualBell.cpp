@@ -128,11 +128,24 @@ void AJRitualBell::OnMeshHit(UPrimitiveComponent* HitComponent,
                              FVector NormalImpulse,
                              const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Bell hit: %s"), *OtherActor->GetName())
+	UE_LOG(LogTemp, Warning, TEXT("%s: HitComponent: %s, OtherActor: %s, OtherComp: %s"), TEXT(__FUNCTION__), *HitComponent->GetName(), *OtherActor->GetName(), *OtherComp->GetName())
+
+	UVALID_LOG_DEBUG(BreakableObjectClass)
+
 	ProjectileMovementComponent->Deactivate();
 	RotatingMovementComponent->Deactivate();
 
-	OnBellHit();
+	if (OtherActor->IsA(BreakableObjectClass) && bEmpowered)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s: You hit breakable object"), TEXT(__FUNCTION__))
+		bEmpowered = false;
+		OnHitBreakableObject();
+		RecallBell();
+	}
+	else
+	{
+		OnBellHit();
+	}
 }
 
 void AJRitualBell::Launch(const FVector& Velocity)
