@@ -2,9 +2,12 @@
 
 
 #include "JRitualBell.h"
+#include "JBracelet.h"
+#include "JInventoryComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/RotatingMovementComponent.h"
+#include "Jormungandr/Utility/WeredMacros.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -84,20 +87,39 @@ void AJRitualBell::UseFirstAbility()
 	Launch(ViewportCenterDirection * FlightSpeed);
 }
 
+void AJRitualBell::UseSecondAbility()
+{
+	Super::UseSecondAbility();
+
+	UJInventoryComponent* InventoryComponent{GetInstigator()->FindComponentByClass<UJInventoryComponent>()};
+
+	UVALID_LOG_DEBUG(InventoryComponent)
+
+	AJBracelet* Bracelet{InventoryComponent->GetBracelet()};
+
+	UVALID_LOG_DEBUG(Bracelet);
+
+	const float BraceletCharges{Bracelet->GetCurrentCharges()};
+
+	if (Bracelet->SubCharge(1.f))
+	{
+		bEmpowered = true;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s: Can't charge bell, bracelet has: %f"), TEXT(__FUNCTION__), BraceletCharges)
+	}
+}
+
 bool AJRitualBell::GetIsInUse()
 {
 	switch (BellState)
 	{
-	case EBellState::EBS_None:
-	case EBellState::EBS_IdleAfterImpact:
-	case EBellState::EBS_PostLaunch:
-	case EBellState::EBS_FlyingToTarget:
-	case EBellState::EBS_Max:
-		return true;
 	case EBellState::EBS_Idle:
 		return false;
+	default:
+		return true;
 	}
-	return false;
 }
 
 void AJRitualBell::OnMeshHit(UPrimitiveComponent* HitComponent,

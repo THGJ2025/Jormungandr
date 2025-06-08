@@ -6,11 +6,12 @@
 #include "Components/ActorComponent.h"
 #include "JInventoryComponent.generated.h"
 
+class AJInventoryItem;
+class AJUsableItem;
 class AJBracelet;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
-class AJInventoryItem;
 
 UCLASS(ClassGroup=(Inventory), meta=(BlueprintSpawnableComponent))
 class JORMUNGANDR_API UJInventoryComponent : public UActorComponent
@@ -26,23 +27,22 @@ protected:
 public:
 	void AddItem(AJInventoryItem* NewItem);
 
-	void ChangeActiveItem(const FInputActionValue& Value);
-	void SetFirstItemAsActiveItem();
-	void SetSecondItemAsActiveItem();
-	void SetThirdItemAsActiveItem();
-	void UseFirstAbilityActiveItem();
-	void UseSecondAbilityActiveItem();
+	UFUNCTION(BlueprintGetter)
+	AJBracelet* GetBracelet()
+	{
+		return Bracelet;
+	}
 
 private:
 	void SetActiveItem(const uint8 ItemIndex);
 
 	UPROPERTY()
-	TObjectPtr<AJInventoryItem> ActiveItem;
+	TObjectPtr<AJUsableItem> ActiveItem;
 	UPROPERTY()
-	TArray<TObjectPtr<AJInventoryItem>> Items;
+	TArray<TObjectPtr<AJUsableItem>> Items;
 	uint8 ActiveItemIndex{};
 
-	UPROPERTY()
+	UPROPERTY(BlueprintGetter=GetBracelet)
 	TObjectPtr<AJBracelet> Bracelet;
 
 	UPROPERTY()
@@ -52,6 +52,15 @@ private:
 
 private:
 	void SetupInput();
+
+	void ChangeActiveItem(const FInputActionValue& Value);
+
+	void SetFirstItemAsActiveItem();
+	void SetSecondItemAsActiveItem();
+	void SetThirdItemAsActiveItem();
+
+	void UseFirstAbilityActiveItem();
+	void UseSecondAbilityActiveItem();
 
 	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
 	TObjectPtr<UInputMappingContext> InventoryMappingContext;

@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "JInventoryItem.h"
+#include "JUsableItem.h"
 #include "JLyre.generated.h"
 
 UCLASS()
-class JORMUNGANDR_API AJLyre : public AJInventoryItem
+class JORMUNGANDR_API AJLyre : public AJUsableItem
 {
 	GENERATED_BODY()
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "JInventoryItem.h"
+#include "JUsableItem.h"
 #include "JRitualBell.generated.h"
 
 class URotatingMovementComponent;
@@ -12,7 +12,7 @@ class UProjectileMovementComponent;
 DECLARE_DELEGATE(FOnFlightCompletedSignature)
 
 UCLASS()
-class JORMUNGANDR_API AJRitualBell : public AJInventoryItem
+class JORMUNGANDR_API AJRitualBell : public AJUsableItem
 {
 	GENERATED_BODY()
 
@@ -26,8 +26,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void UseFirstAbility() override;
+	virtual void UseSecondAbility() override;
 
 	virtual bool GetIsInUse() override;
+
+private:
+	bool bEmpowered{false};
 
 #pragma region ThrowAndRecall
 
@@ -129,9 +133,15 @@ private:
 	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	FRotator BellThrowRotationRate{-1440.f, 0.f, 0.f};
 
+	/**
+	 * Represents the minimum speed at which the bell can be recalled to its target.
+	 */
 	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float BellRecallMinSpeed{1600.f};
 
+	/**
+	 * Represents the maximum duration, in seconds, the bell can spend flying back to its recall target.
+	 */
 	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float BellRecallMaxDuration{1.f};
 
@@ -139,6 +149,10 @@ private:
 
 	FTimerHandle IdleAfterImpactTimer;
 
+	/**
+	 * Represents the duration, in seconds, that the bell remains idle after impacting a surface
+	 * before transitioning to the next state or performing a subsequent action.
+	 */
 	UPROPERTY(EditAnywhere, Category="J|Bell|Properties")
 	float IdleAfterImpactDuration{0.5f};
 
