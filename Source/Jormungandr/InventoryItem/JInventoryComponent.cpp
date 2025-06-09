@@ -11,7 +11,7 @@
 #include "GameFramework/Character.h"
 #include "Jormungandr/Utility/WeredMacros.h"
 
-
+// TODO delete forward declaration
 class UEnhancedInputLocalPlayerSubsystem;
 
 UJInventoryComponent::UJInventoryComponent()
@@ -130,6 +130,7 @@ void UJInventoryComponent::ChangeActiveItem(const FInputActionValue& Value)
 
 	const uint8 ChangeValue = Value.Get<float>();
 	// Wraps index from 0 to size of array, works in both ways for -1 and 1
+	// TODO scrolling down doesnt change item at first
 	ActiveItemIndex = (ActiveItemIndex + ChangeValue + Items.Num()) % Items.Num();
 
 	UE_LOG(LogTemp, Warning, TEXT("ChangeValue: %d"), ChangeValue)

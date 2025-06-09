@@ -8,7 +8,7 @@ public class Jormungandr : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Slate", "SlateCore", "UMG", "FieldSystemEngine" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Slate", "SlateCore", "UMG", "FieldSystemEngine", "AIModule", "GameplayTasks", "NavigationSystem", "EnvironmentQueryEditor" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
