@@ -6,10 +6,12 @@
 #include "Components/ActorComponent.h"
 #include "JInventoryComponent.generated.h"
 
+class AJInventoryItem;
+class AJUsableItem;
+class AJBracelet;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
-class AJInventoryItem;
 
 UCLASS(ClassGroup=(Inventory), meta=(BlueprintSpawnableComponent))
 class JORMUNGANDR_API UJInventoryComponent : public UActorComponent
@@ -23,22 +25,25 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-
 	void AddItem(AJInventoryItem* NewItem);
 
-	void ChangeActiveItem(const FInputActionValue& Value);
-
-	void PrimaryUseActiveItem();
-	void SecondaryUseActiveItem();
+	UFUNCTION(BlueprintGetter)
+	AJBracelet* GetBracelet()
+	{
+		return Bracelet;
+	}
 
 private:
-	void SetActiveItem(AJInventoryItem* NewActiveItem);
+	void SetActiveItem(const uint8 ItemIndex);
 
 	UPROPERTY()
-	TObjectPtr<AJInventoryItem> ActiveItem;
+	TObjectPtr<AJUsableItem> ActiveItem;
 	UPROPERTY()
-	TArray<TObjectPtr<AJInventoryItem>> Items;
+	TArray<TObjectPtr<AJUsableItem>> Items;
 	uint8 ActiveItemIndex{};
+
+	UPROPERTY(BlueprintGetter=GetBracelet)
+	TObjectPtr<AJBracelet> Bracelet;
 
 	UPROPERTY()
 	TObjectPtr<ACharacter> CharacterOwner;
@@ -48,14 +53,29 @@ private:
 private:
 	void SetupInput();
 
+	void ChangeActiveItem(const FInputActionValue& Value);
+
+	void SetFirstItemAsActiveItem();
+	void SetSecondItemAsActiveItem();
+	void SetThirdItemAsActiveItem();
+
+	void UseFirstAbilityActiveItem();
+	void UseSecondAbilityActiveItem();
+
 	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
 	TObjectPtr<UInputMappingContext> InventoryMappingContext;
 	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
 	TObjectPtr<UInputAction> ChangeActiveItemAction;
 	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
-	TObjectPtr<UInputAction> PrimaryUseAction;
+	TObjectPtr<UInputAction> SetFirstItemAsActiveItemAction;
 	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
-	TObjectPtr<UInputAction> SecondaryUseAction;
+	TObjectPtr<UInputAction> SetSecondItemAsActiveItemAction;
+	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
+	TObjectPtr<UInputAction> SetThirdItemAsActiveItemAction;
+	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
+	TObjectPtr<UInputAction> FirstAbilityAction;
+	UPROPERTY(EditDefaultsOnly, Category="J|Inventory|Input")
+	TObjectPtr<UInputAction> SecondAbilityAction;
 
 #pragma endregion
 };
