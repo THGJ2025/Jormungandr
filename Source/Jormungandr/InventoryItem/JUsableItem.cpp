@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "JInventoryItem.h"
+#include "JUsableItem.h"
 
 
-AJInventoryItem::AJInventoryItem()
+AJUsableItem::AJUsableItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
+

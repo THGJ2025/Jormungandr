@@ -29,13 +29,14 @@ private:
 #pragma region Inventory
 
 public:
+	UFUNCTION(BlueprintGetter)
 	UJInventoryComponent* GetInventoryComponent()
 	{
 		return InventoryComponent;
 	}
 
 private:
-	UPROPERTY(VisibleAnywhere, meta=(DisplayName="Inventory Component"))
+	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetInventoryComponent, meta=(DisplayName="Inventory Component"), Category="J|Inventory")
 	TObjectPtr<UJInventoryComponent> InventoryComponent;
 
 #pragma endregion

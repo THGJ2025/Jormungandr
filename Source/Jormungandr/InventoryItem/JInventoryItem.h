@@ -6,14 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "JInventoryItem.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class JORMUNGANDR_API AJInventoryItem : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	AJInventoryItem();
-
-	virtual void PrimaryUse();
-	virtual void SecondaryUse();
 };
